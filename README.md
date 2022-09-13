@@ -1,5 +1,6 @@
 <h1 align="center">
   <img alt="Posterr" title="Posterr" src=".github/strider.png" width="200px" />
+  <p><strong>Posterr</strong></p>
 </h1>
 
 <h3 align="center">
