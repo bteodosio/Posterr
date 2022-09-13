@@ -1,13 +1,8 @@
 import 'reflect-metadata'
 import '@shared/container'
-import * as dotenv from 'dotenv'
 import App from './App'
 import { container } from 'tsyringe'
-import log4js from 'log4js'
-
-dotenv.config()
-const logger = log4js.getLogger()
-logger.level = process.env.LOGGER_LEVEL ?? 'info'
+import logger from '@infra/config/log/Logger'
 
 const app = container.resolve(App)
 

@@ -2,6 +2,6 @@
     "watch":["src"],
     "ext":"ts",
     "execMap":{
-        "ts":"ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --no-notify src/infra/server.ts"
+        "ts":"ts-node-dev -r dotenv/config -r tsconfig-paths/register --transpile-only --ignore-watch node_modules --no-notify src/infra/server.ts"
     }
 }
