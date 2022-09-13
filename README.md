@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="tonStone" title="tonStone" src=".github/strider.png" width="200px" />
+  <img alt="Posterr" title="tonStone" src=".github/strider.jpeg" width="200px" />
 </h1>
 
 <h3 align="center">
