@@ -1,0 +1,13 @@
+# package directories
+.DS_Store
+node_modules
+__tests__
+.env
+.vscode
+
+#Dist
+dist
+
+# NPM
+package-lock.json
+yarn.lock
