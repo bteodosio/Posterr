@@ -53,7 +53,7 @@ describe('Tests for post schema', () => {
     assert.equal(validationError?.errors.user.message, 'User is required!')
   })
 
-  it('Should accept max 777 characters to post Content', async () => {
+  it('Should not accept more than 777 characters to post Content', async () => {
     const invalidPost = validPost
 
     let moreThanMaxChar = ''

@@ -25,7 +25,7 @@ describe('Tests for user schema', () => {
     assert.equal(validationError?.errors.userName.message, 'Username required!')
   })
 
-  it('Should accept max 14 characters to username', async () => {
+  it('Should not accept more than 14 characters to username', async () => {
     const invalidUser = validUser
     invalidUser.userName = 'fdsfsdfsdfadfasdfsadfasdfsdafsdafsdafsdagdsgsdagsdgsda'
     const user = new Users(invalidUser)
