@@ -2,10 +2,7 @@ import Users from '@modules/users/schemas/Users'
 import assert from 'assert'
 
 const validUser = {
-  userName: 'bteodosio',
-  firstName: 'Bruno',
-  lastName: 'Teodosio',
-  email: 'bruno.teodosio@gmail.com'
+  userName: 'bteodosio'
 }
 
 describe('Tests for user schema', () => {
@@ -19,10 +16,7 @@ describe('Tests for user schema', () => {
 
   it('Should require username', async () => {
     const invalidUser = {
-      userName: null,
-      firstName: 'Bruno',
-      lastName: 'Teodosio',
-      email: 'bruno.teodosio@gmail.com'
+      userName: null
     }
     const user = new Users(invalidUser)
 
