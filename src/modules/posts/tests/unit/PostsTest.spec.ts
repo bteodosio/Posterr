@@ -57,9 +57,11 @@ describe('Tests for post schema', () => {
     const invalidPost = validPost
 
     let moreThanMaxChar = ''
-    for (let i = 0; i < 800; i++) {
+    for (let i = 0; i < 500; i++) {
       moreThanMaxChar += Math.floor(Math.random() * 800).toString(36).substring(0, 800)
     }
+
+    console.log(moreThanMaxChar.length)
 
     invalidPost.postContent = moreThanMaxChar
     const post = new Posts(invalidPost)
