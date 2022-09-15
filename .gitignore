@@ -4,6 +4,7 @@ node_modules
 __tests__
 .env
 .vscode
+globalConfig.json
 
 #Dist
 dist

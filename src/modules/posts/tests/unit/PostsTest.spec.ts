@@ -3,7 +3,7 @@ import Users from '@modules/users/schemas/Users'
 import assert from 'assert'
 
 const validPost = {
-  user: new Users({ userName: 'bteodosio' }),
+  user: new Users({ userName: 'dummyUser' }),
   postContent: 'Valid post'
 }
 
@@ -19,7 +19,7 @@ describe('Tests for post schema', () => {
   it('Should create a valid repost', async () => {
     const post = new Posts(validPost)
     const repost = new Posts({
-      user: new Users({ userName: 'bteodosio' }),
+      user: new Users({ userName: 'otherDummyUser' }),
       postContent: '',
       repostedPost: post
     })
@@ -32,7 +32,7 @@ describe('Tests for post schema', () => {
   it('Should create a valid quote-post', async () => {
     const post = new Posts(validPost)
     const quotePost = new Posts({
-      user: new Users({ userName: 'bteodosio' }),
+      user: new Users({ userName: 'otherDummyUser' }),
       postContent: 'This is a valid quote post',
       repostedPost: post
     })
@@ -60,8 +60,6 @@ describe('Tests for post schema', () => {
     for (let i = 0; i < 500; i++) {
       moreThanMaxChar += Math.floor(Math.random() * 800).toString(36).substring(0, 800)
     }
-
-    console.log(moreThanMaxChar.length)
 
     invalidPost.postContent = moreThanMaxChar
     const post = new Posts(invalidPost)

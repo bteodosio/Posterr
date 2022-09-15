@@ -1,14 +1,14 @@
-import mongoose, { Schema, model, Document } from 'mongoose'
+import { Schema, model, Document, Types } from 'mongoose'
 
-interface IPosts extends Document {
-  user: mongoose.Schema.Types.ObjectId
+export interface IPosts extends Document {
+  user: Types.ObjectId
   postContent: string
-  repostedPost: mongoose.Schema.Types.ObjectId
+  repostedPost?: Types.ObjectId
 }
 
 const postsSchema = new Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'User is required!']
   },
@@ -19,7 +19,7 @@ const postsSchema = new Schema({
   },
 
   repostedPost: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Posts'
   }
 

@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { injectable, inject } from 'tsyringe'
 import { IDatabase } from './config/database/IDatabase'
+import routes from '@shared/routes/routes'
 
 @injectable()
 class App {
@@ -24,9 +25,7 @@ class App {
   }
 
   private routes (): void {
-    this.express.get('/', (_req, res) => {
-      return res.send('Hello World')
-    })
+    this.express.use(routes)
   }
 }
 
