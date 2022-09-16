@@ -191,8 +191,6 @@ describe('Integration test for post creation service', () => {
       .post('/posts')
       .send(invalidRequest)
 
-    console.log(invalidResponse)
-
     assert.notEqual(invalidResponse, null)
     assert.equal(invalidResponse.statusCode, 500)
     assert.notEqual(invalidResponse.body, null)

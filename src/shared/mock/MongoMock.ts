@@ -1,6 +1,8 @@
 import { IDatabase } from '@infra/config/database/IDatabase'
 import mongoose from 'mongoose'
 import logger from '@infra/config/log/Logger'
+import Users from '@modules/users/schemas/Users'
+import Posts from '@modules/posts/schemas/Posts'
 
 class MongoMock implements IDatabase {
   public connect (): void {
@@ -29,6 +31,86 @@ class MongoMock implements IDatabase {
       .catch(() => {
         logger.debug('Fail to disconnect Jest mongo memory server')
       })
+  }
+
+  public async loadData (): Promise<void> {
+    const users = [
+      { userName: 'dummyUser' },
+      { userName: 'otherDummyUser' },
+      { userName: 'someDummyUser' },
+      { userName: 'oneDummyUser' }
+    ]
+
+    const savedUsers = await Users.create(users)
+
+    const posts = [
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post'
+      },
+      {
+        user: savedUsers[0]._id,
+        postContent: 'This is a valid post',
+        createdAt: new Date('2022-09-15')
+      },
+      {
+        user: savedUsers[1]._id,
+        postContent: 'This is a valid post',
+        createdAt: new Date('2022-09-15')
+      },
+      {
+        user: savedUsers[1]._id,
+        postContent: 'This is a valid post',
+        createdAt: new Date('2022-09-15')
+      },
+      {
+        user: savedUsers[1]._id,
+        postContent: 'This is a valid post',
+        createdAt: new Date('2022-09-15')
+      }
+    ]
+
+    await Posts.create(posts)
   }
 }
 

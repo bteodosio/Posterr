@@ -9,4 +9,9 @@ routes.post('/posts', (async (req: Request, res: Response): Promise<Response> =>
   return await postController.create(req, res)
 }) as RequestHandler)
 
+routes.get('/posts/', (async (req: Request, res: Response): Promise<Response> => {
+  const postController = container.resolve(PostController)
+  return await postController.getPostByUserName(req, res)
+}) as RequestHandler)
+
 export default routes
