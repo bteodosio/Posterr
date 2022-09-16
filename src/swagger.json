@@ -1,0 +1,224 @@
+{
+  "openapi":"3.0.0",
+  "info":{
+     "title":"Posterr API",
+     "description":"Strider Back-end Assessment",
+     "contact":{
+        "email":"teodosio.goncalves@gmail.com"
+     },
+     "version":"1.0.0"
+  },
+  "servers":[
+     {
+        "url":"http://localhost:3004/",
+        "description":"API test URL"
+     }
+  ],
+  "paths":{
+    "/posts":{
+      "post":{
+        "summary":"Create new post",
+        "description":"This route is used to create new post or repost or quote-post",
+        "tags":[
+          "Posts"
+        ],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#components/schemas/newPost"
+              },
+              "examples":{
+                "posts":{
+                  "value":{
+                    "userName":"dummyUser",
+                    "postContent":"This is a valid post",
+                    "postId": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "201":{
+            "description": "Post Created",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#components/schemas/Post"
+                },
+                "examples":{
+                  "posts":{
+                    "value":{
+                      "postCreated":{
+                        "_id": "63237d1500edff2d4507d27d",
+                        "user": "63237ce500edff2d4507d26b",
+                        "postContent": "This is a valid post",
+                        "repostedPost": "",
+                        "createdAt": "2022-09-15T19:29:25.764Z",
+                        "updatedAt": "2022-09-15T19:29:25.764Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400":{
+            "description": "Invalid request with error description",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#components/schemas/ErrorDescription"
+                },
+                "examples":{
+                  "posts":{
+                    "value":{
+                      "statusCode": 400,
+                      "code": 400,
+                      "message": "Wrong request",
+                      "description": "Invalid username"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get":{
+        "summary": "Get Posts",
+        "description": "This route is used to get posts by params",
+        "tags": ["Posts"],
+        "parameters":[
+          {
+            "name":"userName",
+            "in":"query",
+            "description": "Search by username"
+          },
+          {
+            "name":"page",
+            "in":"query",
+            "description": "Result page number"
+          },
+          {
+            "name":"startDate",
+            "in":"query",
+            "description": "Search all post greater than date informed"
+          },
+          {
+            "name":"endDate",
+            "in":"query",
+            "description": "Search all post less than date informed"
+          }
+        ],
+        "responses":{
+          "200":{
+            "description": "Post Get",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"array",
+                  "items":{
+                    "$ref":"#components/schemas/Post"
+                  }
+                },
+                "examples":{
+                  "posts":{
+                    "value":{
+                      "_id": "63237d1500edff2d4507d27d",
+                      "user": "63237ce500edff2d4507d26b",
+                      "postContent": "This is a valid post",
+                      "repostedPost": "",
+                      "createdAt": "2022-09-15T19:29:25.764Z",
+                      "updatedAt": "2022-09-15T19:29:25.764Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400":{
+            "description": "Invalid request with error description",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#components/schemas/ErrorDescription"
+                },
+                "examples":{
+                  "posts":{
+                    "value":{
+                      "statusCode": 400,
+                      "code": 400,
+                      "message": "Wrong request",
+                      "description": "Invalid username"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components":{
+    "schemas":{
+      "newPost":{
+          "type":"object",
+          "properties":{
+            "userName":{
+                "type":"string"
+            },
+            "postContent":{
+                "type":"string"
+            },
+            "postId":{
+                "type":"string"
+            }
+          }
+      },
+      "Post":{
+        "type":"object",
+        "properties":{
+          "_id":{
+            "type":"string"
+          },
+          "user":{
+              "type":"string"
+          },
+          "postContent":{
+              "type":"string"
+          },
+          "repostedPost":{
+              "type":"string"
+          },
+          "createdAt":{
+            "type":"string"
+          },
+          "updatedAt":{
+            "type":"string"
+          }
+        }
+      },
+      "ErrorDescription":{
+        "type":"object",
+        "properties":{
+          "statusCode":{
+              "type":"number"
+          },
+          "code":{
+              "type":"number"
+          },
+          "message":{
+              "type":"string"
+          },
+          "description":{
+            "type":"string"
+          }
+        }
+      }
+    }
+  }
+}

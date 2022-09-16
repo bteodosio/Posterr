@@ -26,21 +26,9 @@ Method | Endpoint | Description
 ------------- | ------------- | -------------
 **POST** | /posts | Create new post or repost or quote-post.
 **GET** | /posts| Get posts by filter.
+**GET** | ​/health | Check if app is online
+**GET** | /api-doc | API Swagger
 
-**CURL POST** | ​/posts |
-```curl
-curl --location --request POST 'localhost:3004/posts' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "userName":"otherDummyUser",
-    "postContent":"",
-    "postId": ""
-}'
-```
-**CURL GET** | /posts |
-```curl
-curl --location --request GET 'localhost:3004/posts/?userName=dummyUser&page=1&startDate=2022-09-15&endDate=2022-09-16'
-```
 
 ## :fire: Getting Started
 
@@ -50,16 +38,17 @@ These instructions will get this project up and running in your machine.
 
 > [Node.js](http://nodejs.org/) \
 > [NPM](https://www.npmjs.com/) \
-> [YARN](https://yarnpkg.com/)
+> [YARN](https://yarnpkg.com/) \
+> [Docker](https://www.docker.com/)
 
 ### :rocket: Installing
 
 Running project:
 
-- Clone the project:
+- Unzip the project:
 
   ```sh
-  $ git clone https://github.com/bteodosio/Posterr.git
+  $ unzip bruno_teodosio_strider_web_back_end_assessment_3_0
   ```
 
 - Open Posterr folder:
@@ -90,7 +79,11 @@ Running project:
   ```
 
 - Dev Run project:
-
+  - Win
+  ```sh
+  $ ./dev_mode.bat
+  ```
+  - Unix/Mac
   ```sh
   $ yarn dev
   ```
@@ -99,18 +92,45 @@ Running project:
   ```
 
 - Run project:
-
+  - Win
+  ```sh
+  $ ./docker_up.bat
+  ```
+  - Unix/Mac
   ```sh
   $ make up
   ```
 
+- Run tests:
+<span style="color: #FF0000"> Make sure node version > v16.16.0 </span>
+
+
+  ```sh
+  $ yarn test
+  ```
+  ```sh
+  $ npm run test
+  ```
+  > Coverage information will be available at \_\_tests\_\_
+
 ### :information_source: Critique
+
+> Test Details
+ - I've created 4 demo users that you can use to test the application : <span style='color:green'>dummyUser, otherDummyUser, someDummyUser and oneDummyUser</span>
+
+ - There is, also, some post already created, so it's possible to test some validation cases
+
+ - I've included in zip file a collection that you can use to try the application
+
+ - All environment variables are included in zip file, but ignored in git
 
 > Possible Improvements
 
-- Reflect on this project, and write what you would improve if you had more time.
+- I've saved only the post Object Id in repostedPost field, it is better for database performance, but for recover the information you need to populate the request, so front-end can display the post correctly, and this populate method goes down only one level of the repost field. It means that if some other user repost a post that is a repost, the repost information will not be displayed correctly. So, if I got more time, I'd implement a custom populate method to recover post information.
+
+- Babel needs to be configure to transpile param decorators. If I got more time, I would configure it and change tsc. Babel if faster and more reliable.
 
 > Scaling up
 
-- If this project were to grow and have many users and posts, which parts do you think would fail first?
-- In a real-life situation, what steps would you take to scale this product? What other types of technology and infrastructure might you need to use?
+- I think that the worst part dealing with lots of request is recovering information. Especially when using Object Id as reference to other document. I think that the better solution for this is to change the repostedPost field to store a document, instead of Object Id. It will make the database grows fast, but will reduce the time to get the post information.
+- I would also use a cloud service to host this application in a container, like EKS, where it can implement a load balancer and auto-scaling routines.
