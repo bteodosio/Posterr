@@ -48,13 +48,13 @@ Running project:
 - Unzip the project:
 
   ```sh
-  $ unzip bruno_teodosio_strider_web_back_end_assessment_3_0
+  $ unzip bruno_teodosio_strider_web_back_end_assessment_3_0.zip
   ```
 
 - Open Posterr folder:
 
   ```sh
-  $ cd Posterr
+  $ cd bruno_teodosio_strider_web_back_end_assessment_3_0
   ```
 
 - Install all packages:
@@ -64,12 +64,6 @@ Running project:
   ```
   ```sh
   $ npm install
-  ```
-
-- Create .env file:
-
-  ```sh
-  $ cat .env.exemple >> .env
   ```
 
 - Make sure Docker is running:
