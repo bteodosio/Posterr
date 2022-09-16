@@ -24,10 +24,22 @@ This project is a new social media
 
 Method | Endpoint | Description
 ------------- | ------------- | -------------
-**POST** | /visitCounterIncrement?key | Increase the number of visits for a unique key (SiteID).
-**GET** | /visits?key | Get the number of visits for a key (SiteID).
-**POST** | ​/users | Add new user to database.
-**GET** | /users?email | Get user information by email.
+**POST** | /posts | Create new post or repost or quote-post.
+**GET** | /posts| Get posts by filter.
+**CURL POST** | ​/posts |
+```curl
+curl --location --request POST 'localhost:3004/posts' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "userName":"otherDummyUser",
+    "postContent":"",
+    "postId": ""
+}'
+```
+**CURL GET** | /posts |
+```curl
+curl --location --request GET 'localhost:3004/posts/?userName=dummyUser&page=1&startDate=2022-09-15&endDate=2022-09-16'
+```
 
 ## :fire: Getting Started
 
@@ -76,12 +88,28 @@ Running project:
   $ docker info
   ```
 
+- Dev Run project:
+
+  ```sh
+  $ yarn dev
+  ```
+  ```sh
+  $ npm run dev
+  ```
+
 - Run project:
 
   ```sh
   $ make up
   ```
 
-### :information_source: Recommendations
+### :information_source: Critique
 
-> [VS Code](https://code.visualstudio.com/)
+> Possible Improvements
+
+- Reflect on this project, and write what you would improve if you had more time.
+
+> Scaling up
+
+- If this project were to grow and have many users and posts, which parts do you think would fail first?
+- In a real-life situation, what steps would you take to scale this product? What other types of technology and infrastructure might you need to use?
