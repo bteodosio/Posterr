@@ -26,6 +26,7 @@ Method | Endpoint | Description
 ------------- | ------------- | -------------
 **POST** | /posts | Create new post or repost or quote-post.
 **GET** | /posts| Get posts by filter.
+
 **CURL POST** | ​/posts |
 ```curl
 curl --location --request POST 'localhost:3004/posts' \
