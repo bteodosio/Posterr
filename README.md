@@ -1,5 +1,4 @@
 <h1 align="center">
-  <img alt="Posterr" title="Posterr" src=".github/strider.png" width="200px" />
   <p><strong>Posterr</strong></p>
 </h1>
 
@@ -7,18 +6,7 @@
   Back-end Developer Challenge
 </h3>
 
-<p align="center">
-  <img alt = "Github Last Confirmation" src = "https://img.shields.io/github/last-commit/Bteodosio/Posterr">
-  <img alt = "GitHub Main Language" src = "https://img.shields.io/github/languages/top/Bteodosio/Posterr">
-  <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/Bteodosio/Posterr?color=%2304D361">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
-
-  <a href="https://github.com/Bteodosio/Posterr/stargazers">
-    <img alt="Stargazers" src="https://img.shields.io/github/stars/Bteodosio/Posterr?style=social">
-  </a>
-</p>
-
-## :page_with_curl: Summary
+## Summary
 
 This project is a new social media
 
@@ -30,46 +18,57 @@ Method | Endpoint | Description
 **GET** | /api-doc | API Swagger
 
 
-## :fire: Getting Started
+## Getting Started
 
 These instructions will get this project up and running in your machine.
 
-### :wave: Prerequisites
+### Prerequisites
 
 > [Node.js](http://nodejs.org/) \
 > [NPM](https://www.npmjs.com/) \
 > [YARN](https://yarnpkg.com/) \
 > [Docker](https://www.docker.com/)
 
-### :rocket: Installing
+### Installing
 
 Running project:
 
-- Unzip the project:
+- Unzip project:
 
   ```sh
   $ unzip bruno_teodosio_strider_web_back_end_assessment_3_0.zip
   ```
 
-- Open Posterr folder:
+- Open folder:
 
   ```sh
   $ cd bruno_teodosio_strider_web_back_end_assessment_3_0
-  ```
-
-- Install all packages:
-
-  ```sh
-  $ yarn
-  ```
-  ```sh
-  $ npm install
   ```
 
 - Make sure Docker is running:
 
   ```sh
   $ docker info
+  ```
+
+- Run project:
+  - Win
+  ```sh
+  $ ./docker_up.bat
+  ```
+  - Unix/Mac
+  ```sh
+  $ make up
+  ```
+
+- Install all packages:
+<span style="color: #FF0000"> Make sure node version > v16.16.0 </span>
+
+  ```sh
+  $ yarn
+  ```
+  ```sh
+  $ npm install
   ```
 
 - Dev Run project:
@@ -85,19 +84,7 @@ Running project:
   $ npm run dev
   ```
 
-- Run project:
-  - Win
-  ```sh
-  $ ./docker_up.bat
-  ```
-  - Unix/Mac
-  ```sh
-  $ make up
-  ```
-
 - Run tests:
-<span style="color: #FF0000"> Make sure node version > v16.16.0 </span>
-
 
   ```sh
   $ yarn test
@@ -107,7 +94,7 @@ Running project:
   ```
   > Coverage information will be available at \_\_tests\_\_
 
-### :information_source: Critique
+### Critique
 
 > Test Details
  - I've created 4 demo users that you can use to test the application : <span style='color:green'>dummyUser, otherDummyUser, someDummyUser and oneDummyUser</span>
@@ -127,4 +114,5 @@ Running project:
 > Scaling up
 
 - I think that the worst part dealing with lots of request is recovering information. Especially when using Object Id as reference to other document. I think that the better solution for this is to change the repostedPost field to store a document, instead of Object Id. It will make the database grows fast, but will reduce the time to get the post information.
+
 - I would also use a cloud service to host this application in a container, like EKS, where it can implement a load balancer and auto-scaling routines.
