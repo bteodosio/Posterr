@@ -1,12 +1,12 @@
 import Users, { IUser } from '@modules/users/schemas/Users'
-import { IService } from '../IService'
 import Posts, { IPosts } from '../../schemas/Posts'
 import { PostsResponseDTO } from '@modules/posts/dto/PostsResponseDTO'
 import { PostsRequestDTO } from '@modules/posts/dto/PostsRequestDTO'
 import { ErrorHandler } from '@shared/common/ErrorHandler'
 import { Types } from 'mongoose'
+import { ICreatePost } from '../ICreatePost'
 
-export default class CreatePostService implements IService {
+export default class CreatePostService implements ICreatePost {
   private readonly MAX_POST_LIMIT = 5
 
   public async execute (newPostRequestDTO: PostsRequestDTO): Promise<PostsResponseDTO> {

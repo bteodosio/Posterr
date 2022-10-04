@@ -1,19 +1,16 @@
 import { Request, Response } from 'express'
-import { autoInjectable } from 'tsyringe'
+import { autoInjectable, inject } from 'tsyringe'
 import { GetPostsFiltersDTO } from '../dto/GetPostsFiltersDTO'
 import { PostsRequestDTO } from '../dto/PostsRequestDTO'
-import CreatePostService from '../service/impl/CreatePostService'
-import GetPostService from '../service/impl/GetPostService'
+import { ICreatePost } from '../service/ICreatePost'
+import { IGetPost } from '../service/IGetPost'
 
 @autoInjectable()
 export default class PostController {
-  private readonly createPostService: CreatePostService
-  private readonly getPostService: GetPostService
-
-  constructor (createPostServiceImpl: CreatePostService, getPostServiceImpl: GetPostService) {
-    this.createPostService = createPostServiceImpl
-    this.getPostService = getPostServiceImpl
-  }
+  constructor (
+    @inject('CreatePostImpl') private readonly createPostService: ICreatePost,
+    @inject('GetPostImpl') private readonly getPostService: IGetPost
+  ) {}
 
   public async create (req: Request, res: Response): Promise<Response> {
     try {
@@ -40,7 +37,7 @@ export default class PostController {
         endDate: req.query.endDate?.toString(),
         page: parseInt(req.query.page?.toString() ?? '1')
       })
-      const postCreationResponse = await this.getPostService.findPostByFilters(getPostsFiltersDTO)
+      const postCreationResponse = await this.getPostService.execute(getPostsFiltersDTO)
       return res.json(postCreationResponse)
     } catch (ex: any) {
       res.statusCode = ex.statusCode ?? 500

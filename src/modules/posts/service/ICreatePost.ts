@@ -1,6 +1,6 @@
 import { PostsRequestDTO } from '../dto/PostsRequestDTO'
 import { PostsResponseDTO } from '../dto/PostsResponseDTO'
 
-export interface IService{
+export interface ICreatePost{
   execute: (postsRequestDTO: PostsRequestDTO) => Promise<PostsResponseDTO>
 }

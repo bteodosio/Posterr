@@ -2,10 +2,11 @@ import { GetPostsFiltersDTO } from '@modules/posts/dto/GetPostsFiltersDTO'
 import Posts, { IPosts } from '@modules/posts/schemas/Posts'
 import Users from '@modules/users/schemas/Users'
 import { ErrorHandler } from '@shared/common/ErrorHandler'
+import { IGetPost } from '../IGetPost'
 
-export default class GetPostService {
+export default class GetPostService implements IGetPost {
   private readonly MAX_LIMIT_PER_PAGE = 10
-  public async findPostByFilters (getFiltersDTO: GetPostsFiltersDTO): Promise<IPosts[]> {
+  public async execute (getFiltersDTO: GetPostsFiltersDTO): Promise<IPosts[]> {
     const $and = [{}]
 
     if (getFiltersDTO.userName != null && getFiltersDTO.userName.trim() !== '') {
