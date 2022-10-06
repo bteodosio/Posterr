@@ -3,6 +3,7 @@ export class GetPostsFiltersDTO {
   startDate?: string
   endDate?: string
   page?: number
+  maxReturnPerPage?: number
 
   constructor (props?: GetPostsFiltersDTO) {
     if (props !== null) {
