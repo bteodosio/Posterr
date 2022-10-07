@@ -1,6 +1,8 @@
 import { PostsRequestDTO } from '@modules/posts/dto/PostsRequestDTO'
+import { PostsRepositoryImpl } from '@modules/posts/repository/impl/PostsRepositoryImpl'
 import Posts from '@modules/posts/schemas/Posts'
-import CreatePostService from '@modules/posts/service/impl/CreatePostService'
+import { CreatePostService } from '@modules/posts/service/impl/CreatePostService'
+import { UserRepositoryImpl } from '@modules/users/repository/impl/UserRepository'
 import Users, { IUser } from '@modules/users/schemas/Users'
 import { ErrorHandler } from '@shared/common/ErrorHandler'
 import MongoMock from '@shared/mock/MongoMock'
@@ -13,6 +15,10 @@ describe('Test for create post service', () => {
     { userName: 'otherDummyUser' }
   ]
   let savedUsers: IUser[]
+
+  const postsRepositoryImpl = new PostsRepositoryImpl()
+  const userRepositoryImpl = new UserRepositoryImpl()
+  const createPostService = new CreatePostService(userRepositoryImpl, postsRepositoryImpl)
 
   beforeAll(async () => {
     MongoMock.connect()
@@ -34,7 +40,7 @@ describe('Test for create post service', () => {
     validPostCreationRequest.userName = validUsers[0].userName
     validPostCreationRequest.postContent = 'This is a valid post'
 
-    const serviceResponse = await new CreatePostService().execute(validPostCreationRequest)
+    const serviceResponse = await createPostService.execute(validPostCreationRequest)
 
     assert.notEqual(serviceResponse, null)
     assert.equal(serviceResponse.postCreated.user, savedUsers[0]._id.toString())
@@ -47,13 +53,13 @@ describe('Test for create post service', () => {
     validPostCreationRequest.userName = validUsers[0].userName
     validPostCreationRequest.postContent = 'This is a valid post'
 
-    const serviceResponse = await new CreatePostService().execute(validPostCreationRequest)
+    const serviceResponse = await createPostService.execute(validPostCreationRequest)
 
     const validRepostCreationRequest = new PostsRequestDTO()
     validRepostCreationRequest.userName = validUsers[1].userName
     validRepostCreationRequest.postId = serviceResponse.postCreated._id.toString()
 
-    const respostServiceResponse = await new CreatePostService().execute(validRepostCreationRequest)
+    const respostServiceResponse = await createPostService.execute(validRepostCreationRequest)
 
     assert.notEqual(serviceResponse, null)
     assert.equal(respostServiceResponse.postCreated.user, savedUsers[1]._id.toString())
@@ -66,14 +72,14 @@ describe('Test for create post service', () => {
     validPostCreationRequest.userName = validUsers[0].userName
     validPostCreationRequest.postContent = 'This is a valid post'
 
-    const serviceResponse = await new CreatePostService().execute(validPostCreationRequest)
+    const serviceResponse = await createPostService.execute(validPostCreationRequest)
 
     const validRepostCreationRequest = new PostsRequestDTO()
     validRepostCreationRequest.userName = validUsers[1].userName
     validRepostCreationRequest.postId = serviceResponse.postCreated._id.toString()
     validRepostCreationRequest.postContent = 'This is a valid repost'
 
-    const respostServiceResponse = await new CreatePostService().execute(validRepostCreationRequest)
+    const respostServiceResponse = await createPostService.execute(validRepostCreationRequest)
 
     assert.notEqual(serviceResponse, null)
     assert.equal(respostServiceResponse.postCreated.user, savedUsers[1]._id.toString())
@@ -86,7 +92,7 @@ describe('Test for create post service', () => {
     invalidUserRequest.userName = 'invalidUsername'
     invalidUserRequest.postContent = 'This is a valid post'
 
-    await assert.rejects(async () => await new CreatePostService().execute(invalidUserRequest),
+    await assert.rejects(async () => await createPostService.execute(invalidUserRequest),
       new ErrorHandler(400, 'Invalid username', 'Post creation')
     )
   })
@@ -97,7 +103,7 @@ describe('Test for create post service', () => {
     invalidRepostIdRequest.postContent = 'This is a valid post'
     invalidRepostIdRequest.postId = '63237ce500edff2d4507d26b'
 
-    await assert.rejects(async () => await new CreatePostService().execute(invalidRepostIdRequest),
+    await assert.rejects(async () => await createPostService.execute(invalidRepostIdRequest),
       new ErrorHandler(400, 'Invalid post to be reposted', 'Post creation')
     )
   })
@@ -107,13 +113,13 @@ describe('Test for create post service', () => {
     validPostCreationRequest.userName = validUsers[0].userName
     validPostCreationRequest.postContent = 'This is a valid post'
 
-    const serviceResponse = await new CreatePostService().execute(validPostCreationRequest)
+    const serviceResponse = await createPostService.execute(validPostCreationRequest)
 
     const sameUserRepostRequest = new PostsRequestDTO()
     sameUserRepostRequest.userName = validUsers[0].userName
     sameUserRepostRequest.postId = serviceResponse.postCreated._id.toString()
 
-    await assert.rejects(async () => await new CreatePostService().execute(sameUserRepostRequest),
+    await assert.rejects(async () => await createPostService.execute(sameUserRepostRequest),
       new ErrorHandler(400, 'User cannot repost their own post', 'Post creation')
     )
   })
@@ -123,13 +129,13 @@ describe('Test for create post service', () => {
     validPostCreationRequest.userName = validUsers[0].userName
     validPostCreationRequest.postContent = 'This is a valid post'
 
-    await new CreatePostService().execute(validPostCreationRequest)
+    await createPostService.execute(validPostCreationRequest)
 
     const overPostLimitrequest = new PostsRequestDTO()
     overPostLimitrequest.userName = validUsers[0].userName
     overPostLimitrequest.postContent = 'This is a valid post'
 
-    await assert.rejects(async () => await new CreatePostService().execute(overPostLimitrequest),
+    await assert.rejects(async () => await createPostService.execute(overPostLimitrequest),
       new ErrorHandler(400, 'Post creation limit reached', 'Post creation')
     )
   })

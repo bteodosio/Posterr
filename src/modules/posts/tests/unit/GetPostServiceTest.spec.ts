@@ -1,12 +1,16 @@
 import { GetPostsFiltersDTO } from '@modules/posts/dto/GetPostsFiltersDTO'
+import { PostsRepositoryImpl } from '@modules/posts/repository/impl/PostsRepositoryImpl'
 import Posts from '@modules/posts/schemas/Posts'
-import GetPostService from '@modules/posts/service/impl/GetPostService'
+import { GetPostService } from '@modules/posts/service/impl/GetPostService'
 import Users from '@modules/users/schemas/Users'
 import MongoMock from '@shared/mock/MongoMock'
 import assert from 'assert'
 
 describe('Test for get post service', () => {
   const MAX_LIMIT_PER_PAGE = 10
+
+  const postsRepositoryImpl = new PostsRepositoryImpl()
+  const getPostService = new GetPostService(postsRepositoryImpl)
 
   beforeAll(async () => {
     MongoMock.connect()
@@ -20,7 +24,7 @@ describe('Test for get post service', () => {
   })
 
   it('Should return a list of post limited by max limit per page', async () => {
-    const getPostResponse = await new GetPostService().findPostByFilters(new GetPostsFiltersDTO())
+    const getPostResponse = await getPostService.execute(new GetPostsFiltersDTO())
 
     assert.notEqual(getPostResponse, null)
     assert.equal(getPostResponse.length, MAX_LIMIT_PER_PAGE)
@@ -29,7 +33,7 @@ describe('Test for get post service', () => {
   it('Should return a list of post from page informed', async () => {
     const pagebleFilter = new GetPostsFiltersDTO()
     pagebleFilter.page = 2
-    const getPostResponse = await new GetPostService().findPostByFilters(pagebleFilter)
+    const getPostResponse = await getPostService.execute(pagebleFilter)
 
     assert.notEqual(getPostResponse, null)
     assert.equal(getPostResponse.length, (await Posts.find({}).skip(10).limit(MAX_LIMIT_PER_PAGE)).length)
@@ -38,7 +42,7 @@ describe('Test for get post service', () => {
   it('Should return a list of post by username', async () => {
     const userNameFilter = new GetPostsFiltersDTO()
     userNameFilter.userName = 'dummyUser'
-    const getPostResponse = await new GetPostService().findPostByFilters(userNameFilter)
+    const getPostResponse = await getPostService.execute(userNameFilter)
 
     assert.notEqual(getPostResponse, null)
     const existentUser = await Users.findOne({ user: userNameFilter.userName })
@@ -49,7 +53,7 @@ describe('Test for get post service', () => {
     const startDateFilter = new GetPostsFiltersDTO()
     startDateFilter.startDate = '2022-09-16'
 
-    const getPostResponse = await new GetPostService().findPostByFilters(startDateFilter)
+    const getPostResponse = await getPostService.execute(startDateFilter)
 
     assert.notEqual(getPostResponse, null)
     assert.equal(getPostResponse.length, (await Posts.find({ createdAt: { $gte: new Date('2022-09-16') } }).limit(MAX_LIMIT_PER_PAGE)).length)
@@ -59,7 +63,7 @@ describe('Test for get post service', () => {
     const endDateFilter = new GetPostsFiltersDTO()
     endDateFilter.endDate = '2022-09-15'
 
-    const getPostResponse = await new GetPostService().findPostByFilters(endDateFilter)
+    const getPostResponse = await getPostService.execute(endDateFilter)
 
     assert.notEqual(getPostResponse, null)
     assert.equal(getPostResponse.length, (await Posts.find({ createdAt: { $lte: new Date('2022-09-15').setUTCHours(23, 59, 59, 999) } }).limit(MAX_LIMIT_PER_PAGE)).length)
@@ -70,7 +74,7 @@ describe('Test for get post service', () => {
     betweenDateFilter.startDate = '2022-09-14'
     betweenDateFilter.endDate = '2022-09-15'
 
-    const getPostResponse = await new GetPostService().findPostByFilters(betweenDateFilter)
+    const getPostResponse = await getPostService.execute(betweenDateFilter)
 
     assert.notEqual(getPostResponse, null)
     assert.equal(getPostResponse.length, (await Posts.find({ $and: [{ createdAt: { $gte: new Date('2022-09-14') } }, { createdAt: { $lte: new Date('2022-09-15').setUTCHours(23, 59, 59, 999) } }] }).limit(MAX_LIMIT_PER_PAGE)).length)
@@ -79,7 +83,7 @@ describe('Test for get post service', () => {
   it('Should return a empty list when username not found', async () => {
     const userNameFilter = new GetPostsFiltersDTO()
     userNameFilter.userName = 'noDummyUser'
-    const getPostResponse = await new GetPostService().findPostByFilters(userNameFilter)
+    const getPostResponse = await getPostService.execute(userNameFilter)
 
     assert.notEqual(getPostResponse, null)
     const existentUser = await Users.findOne({ userName: userNameFilter.userName })
